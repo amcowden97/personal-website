@@ -1,0 +1,31 @@
+---
+import TerminalShell from '../components/TerminalShell.astro';
+import { directories, type Directory } from '../data/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+export function getStaticPaths() {
+  return directories.map((directory) => ({
+    params: { directory: directory.slug },
+    props: { directory },
+  }));
+}
+
+interface Props {
+  directory: Directory;
+}
+
+const { directory } = Astro.props;
+const homeUrl = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
+---
+
+<BaseLayout title={`${directory.description} | Andy Cowden`}>
+  <TerminalShell compact>
+    <section class="placeholder" aria-labelledby="page-title">
+      <p class="command">andy@home:~$ cd {directory.label}/</p>
+      <p class="eyebrow">DIRECTORY FOUND</p>
+      <h1 id="page-title">{directory.label}/</h1>
+      <p>This directory is under construction.</p>
+      <a class="back-link" href={homeUrl}>← Return to home terminal</a>
+    </section>
+  </TerminalShell>
+</BaseLayout>
