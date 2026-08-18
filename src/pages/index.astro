@@ -1,11 +1,88 @@
 ---
+import TerminalShell from '../components/TerminalShell.astro';
+import { directories, latestLog, systemStatus } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
 ---
 
 <BaseLayout title="Andy Cowden | Personal Website">
-  <section class="terminal" aria-labelledby="page-title">
-    <p class="prompt">ANDY@HOME:~$</p>
-    <h1 id="page-title">Personal Website</h1>
-    <p class="status">System initialization successful.</p>
-  </section>
+  <TerminalShell>
+    <section class="intro" aria-labelledby="page-title">
+      <p class="eyebrow">CONNECTION ESTABLISHED</p>
+      <h1 id="page-title">Hello.</h1>
+      <p>
+        I'm Andy — a software engineer interested in computers, science,
+        wildlife, hardware, and unusual experiments.
+      </p>
+      <p>
+        This machine is home to the things I'm building, investigating, and
+        learning.
+      </p>
+    </section>
+
+    <div class="dashboard">
+      <section class="panel" aria-labelledby="status-heading">
+        <h2 id="status-heading">SYSTEM STATUS</h2>
+        <dl class="status-list">
+          {
+            systemStatus.map((item) => (
+              <div>
+                <dt>{item.label}</dt>
+                <dd class:list={{ 'status-value': item.active }}>
+                  {item.active && (
+                    <span class="status-light" aria-hidden="true" />
+                  )}
+                  {item.value}
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
+      </section>
+
+      <section class="panel" aria-labelledby="log-heading">
+        <h2 id="log-heading">LATEST LOG</h2>
+        <ol class="log-list">
+          {
+            latestLog.map((entry) => (
+              <li>
+                <time datetime={entry.date}>{entry.date}</time>
+                <span>{entry.message}</span>
+              </li>
+            ))
+          }
+        </ol>
+      </section>
+    </div>
+
+    <nav class="directory-nav" aria-labelledby="directory-heading">
+      <p class="command" aria-hidden="true">andy@home:~$ ls</p>
+      <h2 id="directory-heading">DIRECTORIES</h2>
+      <ol class="directory-list">
+        {
+          directories.map((directory, index) => (
+            <li>
+              <a
+                href={`${base}${directory.slug}/`}
+                aria-label={directory.description}
+              >
+                <span class="directory-index">
+                  [{String(index + 1).padStart(2, '0')}]
+                </span>
+                <span>{directory.label}/</span>
+                <span class="directory-arrow" aria-hidden="true">
+                  →
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+
+    <p class="terminal-prompt" aria-label="Terminal prompt">
+      <span>andy@home:~$</span><span class="cursor" aria-hidden="true"></span>
+    </p>
+  </TerminalShell>
 </BaseLayout>

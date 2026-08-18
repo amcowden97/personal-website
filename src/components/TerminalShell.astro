@@ -1,0 +1,38 @@
+---
+interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+---
+
+<article class:list={['terminal', { 'terminal--compact': compact }]}>
+  <header class="terminal-header">
+    <div class="terminal-identity">
+      <span class="terminal-mark" aria-hidden="true"></span>
+      <span>ANDY@HOME:~$</span>
+      <span class="terminal-rule" aria-hidden="true"></span>
+    </div>
+    <dl class="terminal-meta" aria-label="System information">
+      <div>
+        <dt>SYS</dt>
+        <dd>v0.1.0</dd>
+      </div>
+      <div>
+        <dt>STATUS</dt>
+        <dd><span class="status-light" aria-hidden="true"></span>ONLINE</dd>
+      </div>
+    </dl>
+  </header>
+
+  <div class="terminal-screen">
+    <slot />
+  </div>
+
+  <footer class="status-bar" aria-label="Workstation status">
+    <span>LOCAL</span>
+    <span>SYS v0.1.0</span>
+    <span>MEM: 640K OK</span>
+    <span>&copy; Andy</span>
+  </footer>
+</article>
