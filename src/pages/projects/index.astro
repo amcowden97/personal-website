@@ -1,0 +1,63 @@
+---
+import TerminalShell from '../../components/TerminalShell.astro';
+import { projects } from '../../data/projects';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
+---
+
+<BaseLayout
+  title="Projects | Andy Cowden"
+  description="Software, hardware, science, and creative projects by Andy Cowden."
+>
+  <TerminalShell>
+    <header class="archive-intro">
+      <p class="command">andy@home:~$ ls projects/</p>
+      <p class="eyebrow">4 DIRECTORIES FOUND</p>
+      <h1>Project Archive</h1>
+      <p>
+        Software, field science, home systems, and small strange worlds. Choose
+        a directory for the short version of what each project is trying to do.
+      </p>
+    </header>
+
+    <nav aria-label="Project archive">
+      <ol class="project-list">
+        {
+          projects.map((project, index) => (
+            <li
+              class:list={['project-entry', `project-entry--${project.accent}`]}
+            >
+              <a
+                href={`${base}projects/${project.slug}/`}
+                aria-label={`Open ${project.name} project page`}
+              >
+                <span class="project-number">
+                  [{String(index + 1).padStart(2, '0')}]
+                </span>
+                <span class="project-glyph" aria-hidden="true">
+                  {project.glyph}
+                </span>
+                <span class="project-summary">
+                  <strong>{project.name}/</strong>
+                  <span>{project.tagline}</span>
+                </span>
+                <span class="project-status">
+                  <span>STATUS</span>
+                  <strong>{project.status}</strong>
+                </span>
+                <span class="directory-arrow" aria-hidden="true">
+                  →
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+
+    <nav class="page-nav" aria-label="Return navigation">
+      <a href={base}>← home terminal</a>
+    </nav>
+  </TerminalShell>
+</BaseLayout>

@@ -1,0 +1,98 @@
+---
+import TerminalShell from '../../components/TerminalShell.astro';
+import { projects, type Project } from '../../data/projects';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export function getStaticPaths() {
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
+---
+
+<BaseLayout
+  title={`${project.name} | Andy Cowden`}
+  description={project.summary}
+>
+  <TerminalShell accent={project.accent}>
+    <header class="project-hero">
+      <p class="command">andy@home:~/projects$ open {project.slug}</p>
+      <div class="project-label">
+        <span class="project-glyph" aria-hidden="true">{project.glyph}</span>
+        <span>{project.category}</span>
+      </div>
+      <h1>{project.name}</h1>
+      <p class="project-tagline">{project.tagline}</p>
+      <dl class="project-meta">
+        <div>
+          <dt>Status</dt>
+          <dd>{project.status}</dd>
+        </div>
+        <div>
+          <dt>Category</dt>
+          <dd>{project.category}</dd>
+        </div>
+      </dl>
+    </header>
+
+    <div class="project-detail-grid">
+      <section class="project-copy" aria-labelledby="what-heading">
+        <h2 id="what-heading">WHAT IT IS</h2>
+        <p>{project.summary}</p>
+      </section>
+
+      <section class="project-copy" aria-labelledby="why-heading">
+        <h2 id="why-heading">WHY IT EXISTS</h2>
+        <p>{project.why}</p>
+      </section>
+    </div>
+
+    <section class="project-section" aria-labelledby="highlights-heading">
+      <h2 id="highlights-heading">KEY CHARACTERISTICS</h2>
+      <ul class="highlight-list">
+        {project.highlights.map((highlight) => <li>{highlight}</li>)}
+      </ul>
+    </section>
+
+    <section class="project-section" aria-labelledby="technology-heading">
+      <h2 id="technology-heading">TECHNOLOGIES &amp; DISCIPLINES</h2>
+      <ul class="technology-list">
+        {project.technologies.map((technology) => <li>{technology}</li>)}
+      </ul>
+    </section>
+
+    {
+      project.links.length > 0 && (
+        <section class="project-section" aria-labelledby="links-heading">
+          <h2 id="links-heading">EXTERNAL LINKS</h2>
+          <ul class="external-links">
+            {project.links.map((link) => (
+              <li>
+                <a href={link.href} rel="noreferrer">
+                  <span>
+                    <strong>{link.label}</strong>
+                    <small>{link.note}</small>
+                  </span>
+                  <span aria-hidden="true">↗</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <nav class="page-nav" aria-label="Return navigation">
+      <a href={`${base}projects/`}>← project archive</a>
+      <a href={base}>home terminal</a>
+    </nav>
+  </TerminalShell>
+</BaseLayout>

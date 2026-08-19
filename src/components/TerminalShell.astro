@@ -1,12 +1,19 @@
 ---
 interface Props {
   compact?: boolean;
+  accent?: 'field' | 'marine' | 'home' | 'game';
 }
 
-const { compact = false } = Astro.props;
+const { compact = false, accent } = Astro.props;
 ---
 
-<article class:list={['terminal', { 'terminal--compact': compact }]}>
+<article
+  class:list={[
+    'terminal',
+    { 'terminal--compact': compact },
+    accent && `terminal--${accent}`,
+  ]}
+>
   <header class="terminal-header">
     <div class="terminal-identity">
       <span class="terminal-mark" aria-hidden="true"></span>
