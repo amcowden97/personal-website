@@ -7,7 +7,7 @@ export const systemStatus = [
 ] as const;
 
 export const latestLog = [
-  { date: '2026-08-18', message: 'Personal terminal initialized' },
+  { date: '2026-08-18', message: 'Project archive indexed' },
   { date: '2026-08-17', message: 'New research investigation started' },
   { date: '2026-08-15', message: 'Project Field Mouse field work' },
   { date: '2026-08-12', message: 'Workbench inventory updated' },

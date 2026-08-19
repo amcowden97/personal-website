@@ -4,10 +4,12 @@ import { directories, type Directory } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 export function getStaticPaths() {
-  return directories.map((directory) => ({
-    params: { directory: directory.slug },
-    props: { directory },
-  }));
+  return directories
+    .filter((directory) => directory.slug !== 'projects')
+    .map((directory) => ({
+      params: { directory: directory.slug },
+      props: { directory },
+    }));
 }
 
 interface Props {
