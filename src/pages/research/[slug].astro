@@ -1,0 +1,181 @@
+---
+import TerminalShell from '../../components/TerminalShell.astro';
+import { investigations, type Investigation } from '../../data/research';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export function getStaticPaths() {
+  return investigations.map((investigation) => ({
+    params: { slug: investigation.slug },
+    props: { investigation },
+  }));
+}
+
+interface Props {
+  investigation: Investigation;
+}
+
+const { investigation } = Astro.props;
+const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
+---
+
+<BaseLayout
+  title={`${investigation.title} | Research Terminal`}
+  description={investigation.summary}
+>
+  <TerminalShell accent="research">
+    <header class="research-hero">
+      <p class="command">andy@home:~/research$ open {investigation.slug}</p>
+      <div class="research-label">
+        <span class="research-glyph" aria-hidden="true">◌</span>
+        <span>INVESTIGATION OBS-001</span>
+      </div>
+      <h1>{investigation.title}</h1>
+      <p class="research-question">{investigation.question}</p>
+      <dl class="research-meta">
+        <div>
+          <dt>Status</dt>
+          <dd>{investigation.status}</dd>
+        </div>
+        <div>
+          <dt>Started</dt>
+          <dd>
+            <time datetime={investigation.started}>{investigation.started}</time
+            >
+          </dd>
+        </div>
+        {
+          investigation.updated && (
+            <div>
+              <dt>Updated</dt>
+              <dd>
+                <time datetime={investigation.updated}>
+                  {investigation.updated}
+                </time>
+              </dd>
+            </div>
+          )
+        }
+      </dl>
+      <ul class="topic-list" aria-label="Topics">
+        {investigation.topics.map((topic) => <li>{topic}</li>)}
+      </ul>
+    </header>
+
+    {
+      investigation.hypothesis && (
+        <section
+          class="research-section research-section--starting"
+          aria-labelledby="starting-heading"
+        >
+          <h2 id="starting-heading">STARTING IDEA</h2>
+          <p>{investigation.hypothesis}</p>
+        </section>
+      )
+    }
+
+    <section class="research-section" aria-labelledby="evidence-heading">
+      <h2 id="evidence-heading">EVIDENCE / DATA</h2>
+      <div class="evidence-list">
+        {
+          investigation.evidence.map((item, index) => (
+            <article>
+              <p class="evidence-id">E-{String(index + 1).padStart(2, '0')}</p>
+              <h3>{item.label}</h3>
+              <p>{item.detail}</p>
+              {item.limitation && (
+                <p class="limitation">
+                  <strong>LIMIT:</strong> {item.limitation}
+                </p>
+              )}
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="research-section" aria-labelledby="method-heading">
+      <h2 id="method-heading">METHOD</h2>
+      <p class="trust-note">
+        This is the documented evaluation plan. It has not yet produced a
+        reviewed Field Mouse dataset.
+      </p>
+      <ol class="method-list">
+        {investigation.method.map((step) => <li>{step}</li>)}
+      </ol>
+    </section>
+
+    <section
+      class="research-section research-section--findings"
+      aria-labelledby="findings-heading"
+    >
+      <h2 id="findings-heading">FINDINGS / OBSERVATIONS</h2>
+      <ul class="research-points">
+        {investigation.findings.map((finding) => <li>{finding}</li>)}
+      </ul>
+    </section>
+
+    <section
+      class="research-section research-section--uncertain"
+      aria-labelledby="uncertainty-heading"
+    >
+      <h2 id="uncertainty-heading">UNCERTAINTIES</h2>
+      <p class="trust-note">
+        Unknowns are reported explicitly. Automated output is not treated as a
+        confirmed wildlife observation.
+      </p>
+      <ul class="research-points">
+        {
+          investigation.uncertainties.map((uncertainty) => (
+            <li>{uncertainty}</li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="research-section" aria-labelledby="next-heading">
+      <h2 id="next-heading">NEXT QUESTIONS</h2>
+      <ol class="method-list">
+        {investigation.nextQuestions.map((question) => <li>{question}</li>)}
+      </ol>
+    </section>
+
+    {
+      investigation.relatedProject && (
+        <section class="research-section" aria-labelledby="project-heading">
+          <h2 id="project-heading">RELATED PROJECT</h2>
+          <a
+            class="relationship-link"
+            href={`${base}projects/${investigation.relatedProject.slug}/`}
+          >
+            <span>{investigation.relatedProject.name}</span>
+            <span aria-hidden="true">→</span>
+          </a>
+        </section>
+      )
+    }
+
+    <section class="research-section" aria-labelledby="sources-heading">
+      <h2 id="sources-heading">SOURCE NOTES</h2>
+      <ul class="external-links research-sources">
+        {
+          investigation.links.map((link) => (
+            <li>
+              <a href={link.href} rel="noreferrer">
+                <span>
+                  <strong>{link.label}</strong>
+                  <small>{link.note}</small>
+                </span>
+                <span aria-hidden="true">↗</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <nav class="page-nav" aria-label="Return navigation">
+      <a href={`${base}research/`}>← research terminal</a>
+      <a href={base}>home terminal</a>
+    </nav>
+  </TerminalShell>
+</BaseLayout>

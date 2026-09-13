@@ -16,6 +16,7 @@ export interface Project {
   highlights: readonly string[];
   why: string;
   links: readonly ProjectLink[];
+  relatedResearch?: readonly { slug: string; title: string }[];
   accent: 'field' | 'marine' | 'home' | 'game';
   glyph: string;
 }
@@ -48,6 +49,12 @@ export const projects: readonly Project[] = [
         label: 'Project website',
         href: 'https://project-field-mouse.com',
         note: 'Public project site',
+      },
+    ],
+    relatedResearch: [
+      {
+        slug: 'from-detection-to-observation',
+        title: 'From Detection to Observation',
       },
     ],
     accent: 'field',

@@ -1,0 +1,63 @@
+---
+import TerminalShell from '../../components/TerminalShell.astro';
+import { investigations } from '../../data/research';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
+---
+
+<BaseLayout
+  title="Research Terminal | Andy Cowden"
+  description="A public lab notebook for questions, evidence, observations, and uncertainty."
+>
+  <TerminalShell accent="research">
+    <header class="archive-intro research-intro">
+      <p class="command">andy@home:~$ ls research/</p>
+      <p class="eyebrow">1 INVESTIGATION FOUND</p>
+      <h1>Research Terminal</h1>
+      <p>
+        A public lab notebook for questions I'm exploring, the evidence
+        available, and the things that remain unresolved. These are personal
+        investigations, not peer-reviewed research.
+      </p>
+    </header>
+
+    <nav aria-label="Research investigations">
+      <ol class="research-list">
+        {
+          investigations.map((investigation, index) => (
+            <li>
+              <a
+                href={`${base}research/${investigation.slug}/`}
+                aria-label={`Open investigation: ${investigation.title}`}
+              >
+                <span class="research-index">
+                  OBS-{String(index + 1).padStart(3, '0')}
+                </span>
+                <span class="research-glyph" aria-hidden="true">
+                  ◌
+                </span>
+                <span class="research-summary">
+                  <strong>{investigation.title}</strong>
+                  <span>{investigation.question}</span>
+                  <span class="topic-line">
+                    {investigation.topics.join(' / ')}
+                  </span>
+                </span>
+                <span class="research-status">
+                  <span>STATUS</span>
+                  <strong>{investigation.status}</strong>
+                </span>
+                <span aria-hidden="true">→</span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+
+    <nav class="page-nav" aria-label="Return navigation">
+      <a href={base}>← home terminal</a>
+    </nav>
+  </TerminalShell>
+</BaseLayout>
