@@ -90,6 +90,24 @@ const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
       )
     }
 
+    {
+      project.relatedResearch && project.relatedResearch.length > 0 && (
+        <section class="project-section" aria-labelledby="research-heading">
+          <h2 id="research-heading">RELATED RESEARCH</h2>
+          <ul class="related-links">
+            {project.relatedResearch.map((investigation) => (
+              <li>
+                <a href={`${base}research/${investigation.slug}/`}>
+                  <span>{investigation.title}</span>
+                  <span aria-hidden="true">→</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
     <nav class="page-nav" aria-label="Return navigation">
       <a href={`${base}projects/`}>← project archive</a>
       <a href={base}>home terminal</a>

@@ -5,7 +5,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 export function getStaticPaths() {
   return directories
-    .filter((directory) => directory.slug !== 'projects')
+    .filter((directory) => !['projects', 'research'].includes(directory.slug))
     .map((directory) => ({
       params: { directory: directory.slug },
       props: { directory },

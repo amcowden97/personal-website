@@ -1,7 +1,7 @@
 ---
 interface Props {
   compact?: boolean;
-  accent?: 'field' | 'marine' | 'home' | 'game';
+  accent?: 'field' | 'marine' | 'home' | 'game' | 'research';
 }
 
 const { compact = false, accent } = Astro.props;
@@ -23,7 +23,7 @@ const { compact = false, accent } = Astro.props;
     <dl class="terminal-meta" aria-label="System information">
       <div>
         <dt>SYS</dt>
-        <dd>v0.1.0</dd>
+        <dd>v0.3.0</dd>
       </div>
       <div>
         <dt>STATUS</dt>
@@ -38,7 +38,7 @@ const { compact = false, accent } = Astro.props;
 
   <footer class="status-bar" aria-label="Workstation status">
     <span>LOCAL</span>
-    <span>SYS v0.1.0</span>
+    <span>SYS v0.3.0</span>
     <span>MEM: 640K OK</span>
     <span>&copy; Andy</span>
   </footer>
